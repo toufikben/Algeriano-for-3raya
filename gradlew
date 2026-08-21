@@ -35,58 +35,79 @@ while [ -h "$PRG" ] ; do
         PRG=`dirname "$PRG"`"/$link"
     fi
 done
-SAVED="$(cd "$(dirname \"$PRG\")" >/dev/null 2>&1 && pwd)"
+SAVED="`cd \"$(dirname \"$PRG\")\" >/dev/null 2>&1 && pwd`"
 app_path="${SAVED}"
 app_base_name=`basename "$app_path"`
-DIR="$( cd \"$app_path\" && pwd -P)"
-DIR="${DIR%/}"
-if [ ! -d \"$DIR\" ] ; then
-    DIR=\"$(dirname \"$PRG\")\"  fi
-APP_HOME="${DIR}"
+APP_HOME="$SAVED"
 
-what()
-{
-   echo \"Usage: $0 [--help|tasks|--no-daemon]\" >&2
-   exit 1
-}
+# Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
 
-if [ "$1\" = \"--help\" ] ; then
-    cat << EOF
-usage: gradlew [option...] [task...]
+# Use the maximum available, or set MAX_FD != "maximum" to use that value.
+MAX_FD="maximum"
 
-where options include:
-  --help            Shows this help message
-  --no-daemon       Disables the Daemon
-EOF
-   exit 0
-fi
+warn () {
+    echo "$*"
+} >&2
 
-with_wrapper=true
-if [ "$with_wrapper" = "true" ] ; then
-    # Use the maximum available, or set MAX_FD != "maximum"
-    MAX_FD="maximum"
-    # Linux sed version number output to null
-    [ "$MAX_FD" = "maximum" ] && MAX_FD=`ulimit -H -n`
-    [ "$MAX_FD" = "unlimited" ] && MAX_FD=9223372036854775807
-    if [ -z "$MAX_FD" ] ; then
-        if [ -r /proc/sys/fs/file-max ]; then
-            MAX_FD=`cat /proc/sys/fs/file-max`
-        else
-            MAX_FD="maximum"
+# Increase the maximum file descriptors if we can.
+if [ "$cygwin" != "true" -a "$darwin" != "true" -a "$nonstop" != "true" ] ; then
+    MAX_FD_LIMIT=`ulimit -H -n`
+    if [ $? -eq 0 ] ; then
+        if [ "$MAX_FD" = "maximum" -o "$MAX_FD" = "max" ] ; then
+            MAX_FD="$MAX_FD_LIMIT"
         fi
+        ulimit -n $MAX_FD
+        if [ $? -ne 0 ] ; then
+            warn "Could not set maximum file descriptor limit: $MAX_FD"
+        fi
+    else
+        warn "Could not query maximum file descriptor limit: $MAX_FD_LIMIT"
     fi
-    ulimit -n $MAX_FD
-    if [ $? -ne 0 ] ; then
-        warn "Could not set maximum file descriptor limit: $MAX_FD"
-    fi
-else
-    warn \"max_fd_info() is not supported on this platform\"
 fi
 
-warn " Application will be invoked as: $JAVA_EXE $JAVA_OPTS $GRADLE_OPTS\"
--jar \"$GRADLE_JAR\" \"$@\""
-warn
+# For Darwin, add options to specify how the application appears in the dock
+if $darwin; then
+    GRADLE_OPTS="$GRADLE_OPTS \"-Xdock:name=$app_base_name\" \"-Xdock:icon=$APP_HOME/media/gradle.icns\""
+fi
 
-[[ \"$@\" == \"--quiet\" ]] && shift && exec >/dev/null
-set -o pipefail
-exec \"$JAVA_EXE\" $JAVA_OPTS $GRADLE_OPTS -classpath \"$GRADLE_JAR\" org.gradle.wrapper.GradleWrapperMain \"$@\"
+# For Cygwin or MSYS, switch paths to Windows format before running java
+if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
+    APP_HOME=`cygpath --path --mixed "$APP_HOME"`
+    CLASSPATH=`cygpath --path --mixed "$CLASSPATH"`
+
+    JAVACMD=`cygpath --unix "$JAVACMD"`
+
+    # We build the pattern for arguments to be converted via cygpath
+    ROOTDIRSRAW=`find -L / -maxdepth 3 -type d -name java >/dev/null 2>&1 && find -L / -maxdepth 3 -type d -name java | head -1`
+fi
+
+if [ -z "$JAVA_HOME" ] ; then
+    JAVA_EXE="java"
+else
+    JAVA_EXE="$JAVA_HOME/bin/java"
+fi
+
+if [ -z "$JAVACMD" ] ; then
+    JAVACMD="$JAVA_EXE"
+fi
+
+# Collect all arguments for the java command, stacking in reverse order:
+#   * args from the command line
+#   * the main class name
+#   * -classpath
+#   * -D...appname settings
+#   * --module-path (only if needed)
+#   * DEFAULT_JVM_OPTS, JAVA_OPTS, and GRADLE_OPTS environment variables.
+
+# For Cygwin or MSYS, switch paths to Windows format before running java
+if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
+    APP_HOME=`cygpath --path --mixed "$APP_HOME"`
+    CLASSPATH=`cygpath --path --mixed "$CLASSPATH"`
+    JAVACMD=`cygpath --unix "$JAVACMD"`
+fi
+
+exec "$JAVACMD" $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS \
+	-classpath "$APP_HOME/gradle/wrapper/gradle-wrapper.jar" \
+	org.gradle.wrapper.GradleWrapperMain \
+	"$@"
