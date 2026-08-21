@@ -239,7 +239,7 @@ fun SecurityMainScreen(
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "حماية الهاتف",
+                            text = "Algeriano for 3raya",
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp,
                             color = Color.White

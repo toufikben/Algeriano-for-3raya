@@ -22,6 +22,6 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "حماية الهاتف"
+rootProject.name = "Algeriano for 3raya"
 
 include(":app")

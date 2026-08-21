@@ -134,12 +134,22 @@ fun DeveloperInfoDialog(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 Text(
-                    text = "تطبيق حماية الهاتف وكاشف المتسللين",
+                    text = "Algeriano for 3raya",
                     fontWeight = FontWeight.Bold,
-                    fontSize = 17.sp,
+                    fontSize = 20.sp,
                     color = Color.White,
                     textAlign = TextAlign.Center
                 )
+
+                Text(
+                    text = "تطبيق حماية الهاتف وكاشف المتسللين",
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp,
+                    color = Color(0xFF94A3B8),
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
                     text = "الإصدار: 1.0.0 (أحدث إصدار)",
@@ -147,6 +157,75 @@ fun DeveloperInfoDialog(
                     color = EmeraldActive,
                     fontWeight = FontWeight.Medium
                 )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Restricted Settings Guide Card (Android 13+)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(Color(0xFF332005))
+                        .border(1.dp, Color(0xFFF59E0B).copy(alpha = 0.6f), RoundedCornerShape(14.dp))
+                        .padding(14.dp)
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Filled.Security,
+                            contentDescription = null,
+                            tint = Color(0xFFF59E0B),
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "حل مشكلة صلاحية مدير الجهاز (أندرويد 13 فما فوق):",
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFFFEF3C7),
+                            fontSize = 13.sp
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "إذا ظهرت لك رسالة «App was denied access» عند محاولة تفعيل مدير الجهاز:\n" +
+                                "1. افتح إعدادات هاتفك (Settings) ⬅️ التطبيقات (Apps).\n" +
+                                "2. ابحث عن تطبيق Algeriano for 3raya وافتحه.\n" +
+                                "3. اضغط على قائمة الثلاث نقاط (⋮) في أعلى الشاشة.\n" +
+                                "4. اختر «السماح بالإعدادات المقيدة» (Allow restricted settings).\n" +
+                                "5. أدخل رمز قفل هاتفك للتأكيد، ثم ارجع للتطبيق وفعل الصلاحية بنجاح.",
+                        color = Color(0xFFFDE68A),
+                        fontSize = 12.sp,
+                        lineHeight = 18.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Button(
+                        onClick = {
+                            val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                data = Uri.parse("package:${context.packageName}")
+                            }
+                            try {
+                                context.startActivity(intent)
+                            } catch (e: Exception) {
+                                // Ignore
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFF59E0B),
+                            contentColor = Color.Black
+                        )
+                    ) {
+                        Text(
+                            text = "الانتقال المباشر لصفحة معلومات التطبيق",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp
+                        )
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -219,6 +298,46 @@ fun DeveloperInfoDialog(
                             fontSize = 13.sp
                         )
                     }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Heartfelt Dedication Card (الإهداء)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(Color(0xFF064E3B).copy(alpha = 0.35f))
+                        .border(1.dp, Color(0xFF10B981).copy(alpha = 0.5f), RoundedCornerShape(14.dp))
+                        .padding(14.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = null,
+                            tint = Color(0xFF34D399),
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "إهـداء:",
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF6EE7B7),
+                            fontSize = 14.sp
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "إلى أمي، وأبي رحمه الله، وإخوتي، وأصدقائي، وكل المسلمين الموحدين على نهج السلف الصالح.\n\nمن متسرب مدرسي.. نسأل الله التقوى والإخلاص والتوحيد.. جزاكم الله خيراً.",
+                        color = Color(0xFFE6FFFA),
+                        fontSize = 12.5.sp,
+                        lineHeight = 20.sp,
+                        fontWeight = FontWeight.Medium
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
