@@ -36,11 +36,11 @@ jobs:
 
       - name: Create debug keystore
         run: |
-          keytool -genkey -v -keystore debug.keystore \
+          keytool -genkey -noprompt -v -keystore debug.keystore \
             -keyalias androiddebugkey \
             -keypass android \
             -storepass android \
-            -dname "CN=Android Debug, OU=Android, O=Google, L=Mountain View, ST=CA, C=US" \
+            -dname "CN=Debug Certificate, OU=App, O=Company, L=City, ST=State, C=US" \
             -validity 365 \
             -keyalg RSA \
             -keysize 2048
