@@ -34,17 +34,14 @@ jobs:
         with:
           gradle-version: ${{ env.GRADLE_VERSION }}
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+        run: gradle assembleDebug --stacktrace
 
       - name: Build Release APK (unsigned)
-        run: ./gradlew assembleRelease --stacktrace
+        run: gradle assembleRelease --stacktrace
 
       - name: Build Release AAB
-        run: ./gradlew bundleRelease --stacktrace
+        run: gradle bundleRelease --stacktrace
 
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
@@ -92,11 +89,8 @@ jobs:
         with:
           gradle-version: ${{ env.GRADLE_VERSION }}
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
       - name: Run unit tests
-        run: ./gradlew test --stacktrace
+        run: gradle test --stacktrace
 
       - name: Upload test results
         if: always()
