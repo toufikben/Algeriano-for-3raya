@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  GRADLE_VERSION: 8.0
+  GRADLE_VERSION: 9.3.1
   JDK_VERSION: 17
 
 jobs:
@@ -29,8 +29,10 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: ${{ env.GRADLE_VERSION }}
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug
@@ -43,6 +45,7 @@ jobs:
 
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: apk-debug
           path: app/build/outputs/apk/debug/app-debug.apk
@@ -50,6 +53,7 @@ jobs:
 
       - name: Upload Release APK artifacts
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: apk-release
           path: app/build/outputs/apk/release/app-release-unsigned.apk
@@ -57,6 +61,7 @@ jobs:
 
       - name: Upload AAB artifacts
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: aab-release
           path: app/build/outputs/bundle/release/app-release.aab
@@ -79,8 +84,10 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: ${{ env.GRADLE_VERSION }}
 
       - name: Run unit tests
         run: ./gradlew test
