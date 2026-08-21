@@ -36,7 +36,14 @@ jobs:
 
       - name: Create debug keystore
         run: |
-          keytool -genkey -v -keystore debug.keystore -keyalias androiddebugkey -keypass android -storepass android -dname "C=US, ST=CA, L=Mountain View, O=Google, OU=Android, CN=Android Debug" -validity 365 -keyalg RSA -keysize 2048
+          keytool -genkey -v -keystore debug.keystore \
+            -keyalias androiddebugkey \
+            -keypass android \
+            -storepass android \
+            -dname "CN=Android Debug, OU=Android, O=Google, L=Mountain View, ST=CA, C=US" \
+            -validity 365 \
+            -keyalg RSA \
+            -keysize 2048
 
       - name: Build Debug APK
         run: gradle assembleDebug --stacktrace
